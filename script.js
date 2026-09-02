@@ -4,27 +4,39 @@ const code = $("codigo");
 const result = $("resultado");
 
 function criarElemento(codigo) {
-    let tag, id, content;
+    let tag, id, content, gtr, e;
+    let wd, hg, bg;
+    let borderRadius, body, el;
 
 
 
-    try { tag = codigo.split("[tag:")[1].split("]")[0]; } catch { };
-
-    try { id = codigo.split("[id:")[1].split("]")[0]; } catch { };
-
-    try { content = codigo.split("[text:")[1].split("]")[0]; } catch { };
+    try { tag = codigo.split("[tag:")[1].split("]")[0]; } catch (e) { };
+    try { css = codigo.split("[css:")[1].split("]")[0]; } catch (e) { };
+    try { id = codigo.split("[id:")[1].split("]")[0]; } catch (e) { };
+    try { content = codigo.split("[text:")[1].split("]")[0]; } catch (e) { };
+    try { content = codigo.split("[text:")[1].split("]")[0]; } catch (e) { };
+    try { gtr = $(`${codigo.split("[gtr:")[1].split("]")[0]}`) } catch (e) { };
+    try { wd = codigo.split("[wd:")[1].split("]")[0] } catch (e) { };
+    try { hg = codigo.split("[hg:")[1].split("]")[0] } catch (e) { };
+    try { bg = codigo.split("[bg:")[1].split("]")[0] } catch (e) { };
+    try { borderRadius = codigo.split("[bRadius:")[1].split("]")[0] } catch (e) { };
 
     if (!tag) {
         console.error("Tag inválida!");
         return
     }
 
-    if (!content) {
-        console.error("Conteúdo inválido!");
-        return
+    if (tag == "body") {
+        console.log("Tag body detectada, CSS: " + css);
+        document.body.style.cssText = css;
+        return;
+    } else {
+        el = document.createElement(tag);
     }
 
-    const el = document.createElement(tag);
+    if (!el) {
+        return;
+    }
 
     if (id) {
         el.id = id;
@@ -34,7 +46,30 @@ function criarElemento(codigo) {
         el.innerHTML = content;
     }
 
-    result.appendChild(el);
+    if (wd) {
+        el.style.width = wd;
+    }
+
+    if (hg) {
+        el.style.heigth = hg;
+    }
+
+    if (bg) {
+        el.style.backgroundColor = bg;
+    }
+
+    if (borderRadius) {
+        el.style.borderRadius = borderRadius;
+    }
+
+
+    if (gtr) {
+        gtr.appendChild(el);
+    }
+    else {
+        result.appendChild(el);
+    }
+
 }
 
 code.addEventListener("input", () => {
